@@ -80,13 +80,12 @@ namespace CursorControllerPendulum
 
         private double MassToRadius(double x)
         {
-
             if (_frameWidth > _frameHeight)
             {
-                return Normalize(x) * _frameWidth;
+                return Math.Sqrt(Normalize(x)) * (_frameWidth / 10);
             }
 
-            return Normalize(x) * _frameHeight;
+            return Math.Sqrt(Normalize(x)) * (_frameHeight / 10);
         }
 
         private double Normalize(double x)
