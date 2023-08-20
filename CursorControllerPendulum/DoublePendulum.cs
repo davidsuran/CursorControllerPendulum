@@ -10,36 +10,55 @@ namespace CursorControllerPendulum
     {
         public readonly double Radius1 = 105;
         public readonly double Radius2 = 175;
-        public double Angle1 = 0;
-        public double Angle2 = 0;
-        public double AngleVelocity1 = 0;
-        public double AngleVelocity2 = 0;
+
+        private readonly double _mass1 = 100;
+        private readonly double _mass2 = 10;
+
+        public double Angle1 => _angle1;
+        private double _angle1 = 0;
+
+        public double Angle2 => _angle2;
+        private double _angle2 = 0;
+
+        public double AngleVelocity1 => _angleVelocity1;
+        private double _angleVelocity1 = 0;
+
+        public double AngleVelocity2 => _angleVelocity2;
+        private double _angleVelocity2 = 0;
+
         static readonly double G = 9.8 / (60);
 
         public int BallRadius1 => (int)MassToRadius(_mass1);
         public int BallRadius2 => (int)MassToRadius(_mass2);
 
-        private readonly double _mass1 = 100;
-        private readonly double _mass2 = 10;
 
         static double Px2 = -1;
         static double Py2 = -1;
-        public readonly double Cx, Cy;
-        public double X1 = 0;
-        public double Y1 = 0;
-        public double X2 = 0;
-        public double Y2 = 0;
 
-        private double _frameWidth;
-        private double _frameHeight;
+        public readonly double X0;
+        public readonly double Y0;
+
+        public double X1 => _x1;
+        private double _x1;
+
+        public double Y1 => _y1;
+        private double _y1;
+
+        public double X2 => _x2;
+        private double _x2;
+
+        public double Y2 => _y2;
+        private double _y2;
+
+        private readonly double _frameWidth;
+        private readonly double _frameHeight;
 
         public DoublePendulum(double width, double height)
         {
-            //double width = 450;
-            Angle1 = Math.PI / 2;
-            Angle2 = Math.PI / 1;
-            Cx = width / 2;
-            Cy = height / 4;
+            _angle1 = Math.PI / 2;
+            _angle2 = Math.PI / 1;
+            X0 = width / 2;
+            Y0 = height / 4;
 
             _frameWidth = width;
             _frameHeight = height;
@@ -49,30 +68,30 @@ namespace CursorControllerPendulum
         {
             // https://www.myphysicslab.com/pendulum/double-pendulum-en.html
 
-            double num1 = -G * (2 * _mass1 + _mass2) * Math.Sin(Angle1);
-            double num2 = -_mass2 * G * Math.Sin(Angle1 - 2 * Angle2);
-            double num3 = -2 * Math.Sin(Angle1 - Angle2) * _mass2;
-            double num4 = AngleVelocity2 * AngleVelocity2 * Radius2 + AngleVelocity1 * AngleVelocity1 * Radius1 * Math.Cos(Angle1 - Angle2);
-            double den = Radius1 * (2 * _mass1 + _mass2 - _mass2 * Math.Cos(2 * Angle1 - 2 * Angle2));
+            double num1 = -G * (2 * _mass1 + _mass2) * Math.Sin(_angle1);
+            double num2 = -_mass2 * G * Math.Sin(_angle1 - 2 * _angle2);
+            double num3 = -2 * Math.Sin(_angle1 - _angle2) * _mass2;
+            double num4 = AngleVelocity2 * AngleVelocity2 * Radius2 + AngleVelocity1 * AngleVelocity1 * Radius1 * Math.Cos(_angle1 - _angle2);
+            double den = Radius1 * (2 * _mass1 + _mass2 - _mass2 * Math.Cos(2 * _angle1 - 2 * _angle2));
             double angleAcceleration1 = (num1 + num2 + num3 * num4) / den;
 
-            num1 = 2 * Math.Sin(Angle1 - Angle2);
+            num1 = 2 * Math.Sin(_angle1 - _angle2);
             num2 = (AngleVelocity1 * AngleVelocity1 * Radius1 * (_mass1 + _mass2));
-            num3 = G * (_mass1 + _mass2) * Math.Cos(Angle1);
-            num4 = AngleVelocity2 * AngleVelocity2 * Radius2 * _mass2 * Math.Cos(Angle1 - Angle2);
-            den = Radius2 * (2 * _mass1 + _mass2 - _mass2 * Math.Cos(2 * Angle1 - 2 * Angle2));
+            num3 = G * (_mass1 + _mass2) * Math.Cos(_angle1);
+            num4 = AngleVelocity2 * AngleVelocity2 * Radius2 * _mass2 * Math.Cos(_angle1 - _angle2);
+            den = Radius2 * (2 * _mass1 + _mass2 - _mass2 * Math.Cos(2 * _angle1 - 2 * _angle2));
             double angleAcceleration2 = (num1 * (num2 + num3 + num4)) / den;
 
-            X1 = Radius1 * Math.Sin(Angle1);
-            Y1 = Radius1 * Math.Cos(Angle1);
+            _x1 = Radius1 * Math.Sin(_angle1);
+            _y1 = Radius1 * Math.Cos(_angle1);
 
-            X2 = X1 + Radius2 * Math.Sin(Angle2);
-            Y2 = Y1 + Radius2 * Math.Cos(Angle2);
+            _x2 = X1 + Radius2 * Math.Sin(_angle2);
+            _y2 = Y1 + Radius2 * Math.Cos(_angle2);
 
-            AngleVelocity1 += angleAcceleration1;
-            AngleVelocity2 += angleAcceleration2;
-            Angle1 += AngleVelocity1;
-            Angle2 += AngleVelocity2;
+            _angleVelocity1 += angleAcceleration1;
+            _angleVelocity2 += angleAcceleration2;
+            _angle1 += _angleVelocity1;
+            _angle2 += _angleVelocity2;
 
             Px2 = X2;
             Py2 = Y2;

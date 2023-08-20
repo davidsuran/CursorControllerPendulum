@@ -1,6 +1,6 @@
 ﻿namespace CursorControllerPendulum
 {
-    partial class Form1
+    partial class PendulumForm
     {
 
         /// <summary>
@@ -30,51 +30,48 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            pictureBox1 = new PictureBox();
+            PendulumPictureBox = new PictureBox();
             PendulumTimer = new System.Windows.Forms.Timer(components);
             MouseTimer = new System.Windows.Forms.Timer(components);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PendulumPictureBox).BeginInit();
             SuspendLayout();
             // 
-            // pictureBox1
+            // PendulumPictureBox
             // 
-            pictureBox1.Location = new Point(0, 0);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(1280, 720);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            PendulumPictureBox.Location = new Point(0, 0);
+            PendulumPictureBox.Name = "PendulumPictureBox";
+            PendulumPictureBox.Size = new Size(1280, 720);
+            PendulumPictureBox.TabIndex = 0;
+            PendulumPictureBox.TabStop = false;
             // 
             // PendulumTimer
             // 
             PendulumTimer.Enabled = true;
             PendulumTimer.Interval = 16;
-            PendulumTimer.Tick += timer1_Tick;
+            PendulumTimer.Tick += PendulumTimerTick;
             // 
             // MouseTimer
             // 
-            MouseTimer.Tick += MouseTimer_Tick;
+            MouseTimer.Enabled = true;
+            MouseTimer.Interval = 32;
+            MouseTimer.Tick += MouseTimerTick;
             // 
-            // Form1
+            // PendulumForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1280, 722);
-            Controls.Add(pictureBox1);
-            Name = "Form1";
-            Text = "Form1";
-            Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            Controls.Add(PendulumPictureBox);
+            Name = "PendulumForm";
+            Text = "PendulumForm";
+            Load += PendulumFormLoad;
+            ((System.ComponentModel.ISupportInitialize)PendulumPictureBox).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-
-
-
-
-
-        private PictureBox pictureBox1;
+        private PictureBox PendulumPictureBox;
         private System.Windows.Forms.Timer PendulumTimer;
         private System.Windows.Forms.Timer MouseTimer;
     }
