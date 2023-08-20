@@ -1,15 +1,22 @@
-﻿namespace CursorControllerPendulum
+﻿using System.Runtime.InteropServices;
+
+namespace CursorControllerPendulum
 {
     public partial class PendulumForm : Form
     {
         private PendulumImage _image;
         private DoublePendulum _pendulum;
 
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        static extern ExecutionState SetThreadExecutionState(ExecutionState esFlags);
+
         public PendulumForm()
         {
             InitializeComponent();
 
             _pendulum = new DoublePendulum(PendulumPictureBox.Width, PendulumPictureBox.Height);
+
+            PreventScreenSaver(true);
         }
 
         private void PendulumFormLoad(object sender, EventArgs e)
@@ -24,18 +31,23 @@
             PendulumPictureBox.Image = _image.GetImage(_pendulum);
         }
 
-        int i = 0;
         private void MouseTimerTick(object sender, EventArgs e)
         {
-            i++;
-            if (i >= 10000)
-            {
-                return;
-            }
-
+            // This doesn't prevent win from going to sleep, I disabled the timer
             Point ScreenPoint = PendulumPictureBox.PointToScreen(_image.P2);
             MouseOperations.SetCursorPosition(ScreenPoint);
         }
 
+        private void PreventScreenSaver(bool sw)
+        {
+            if (sw)
+            {
+                SetThreadExecutionState(ExecutionState.ES_DISPLAY_REQUIRED | ExecutionState.ES_CONTINUOUS);
+            }
+            else
+            {
+                SetThreadExecutionState(ExecutionState.ES_CONTINUOUS);
+            }
+        }
     }
 }

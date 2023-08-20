@@ -52,7 +52,6 @@
             // 
             // MouseTimer
             // 
-            MouseTimer.Enabled = true;
             MouseTimer.Interval = 32;
             MouseTimer.Tick += MouseTimerTick;
             // 
