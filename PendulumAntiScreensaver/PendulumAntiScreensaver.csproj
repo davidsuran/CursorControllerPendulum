@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>Microsoft Visual Studio 2022</AssemblyName>
   </PropertyGroup>
 
 </Project>

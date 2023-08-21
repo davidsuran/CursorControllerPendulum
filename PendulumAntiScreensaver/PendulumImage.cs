@@ -11,7 +11,8 @@
         private readonly Brush redDarkBrush = Brushes.DarkRed;
         private readonly Brush blueBrush = Brushes.DarkBlue;
 
-        private readonly Color _bgColor = Color.Wheat;
+        private Color _bgColor = Color.Wheat;
+        private KnownColor _currentBgColor = KnownColor.Wheat;
 
         Pen blackPen = new Pen(Color.Black);
         private double _armLengthMultiplier = 2.4;
@@ -63,6 +64,18 @@
             _p2 = new Point(_x2, _y2);
 
             return bitmap;
-        }       
+        }
+
+        public void NextBackgroundColor()
+        {
+            _currentBgColor++;
+
+            if (!Enum.IsDefined(typeof(KnownColor), _currentBgColor))
+            {
+                _currentBgColor = KnownColor.ActiveBorder;
+            }
+
+            _bgColor = Color.FromKnownColor(_currentBgColor);
+        }
     }
 }
